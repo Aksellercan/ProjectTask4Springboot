@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Smartphone Comparison</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: inline-block;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        select, button {
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            font-size: 16px;
+        }
+
+        /* Style all buttons like the back button */
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .phone-details {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .phone {
+            flex: 1;
+            text-align: center;
+        }
+
+        .phone img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .phone h3 {
+            margin-top: 10px;
+            color: #333;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            margin-right: 20px; /* Space between button and h1 */
+        }
+
+        h1 {
+            margin: 0; /* Remove default margin from h1 */
+        }
+    </style>
+</head>
+<body>
+<div class="header-container">
+    <button class="back-button" onclick="window.location.href='/'">Go Back</button>
+    <h1>Compare Smartphones</h1>
+</div>
+
+<form method="post" th:action="@{/compare}">
+    <!-- Dropdown for Phone 1 -->
+    <label for="phone1">Choose Phone 1:</label>
+    <select id="phone1" name="phone1Id" required>
+        <option value="" disabled selected>Select a phone</option>
+        <option th:each="phone : ${smartphones}"
+                th:value="${phone.id}"
+                th:text="${phone.name}"></option>
+    </select>
+
+    <!-- Dropdown for Phone 2 -->
+    <label for="phone2">Choose Phone 2:</label>
+    <select id="phone2" name="phone2Id" required>
+        <option value="" disabled selected>Select a phone</option>
+        <option th:each="phone : ${smartphones}"
+                th:value="${phone.id}"
+                th:text="${phone.name}"></option>
+    </select>
+
+    <!-- Dropdown for Attribute -->
+    <label for="attribute">Choose Attribute:</label>
+    <select id="attribute" name="attribute" required>
+        <option value="" disabled selected>Select an attribute</option>
+        <option value="RAM">RAM</option>
+        <option value="battery">Battery Size</option>
+        <option value="screen">Screen Size</option>
+        <option value="storage">Storage</option>
+        <option value="processor">Processor Speed</option>
+    </select>
+
+    <button type="submit">Compare</button>
+</form>
+
+<!-- Comparison Result -->
+<div th:if="${result}" class="result">
+    <h2>Comparison Result:</h2>
+    <p th:text="${result}"></p>
+</div>
+
+<div th:if="${phone1 != null && phone2 != null}" class="phone-details">
+    <div class="phone">
+        <h3 th:text="${phone1.name}"></h3>
+        <p th:text="'RAM: ' + ${phone1.ram}"></p>
+        <p th:text="'Processor Speed: ' + ${phone1.processorspeed} + ' GHz'"></p>
+        <p th:text="'Battery: ' + ${phone1.batterysize} + ' mAh'"></p>
+        <p th:text="'Screen: ' + ${phone1.screensize} + ' inches'"></p>
+        <p th:text="'Storage: ' + ${phone1.storage} + ' GB'"></p>
+        <p th:text="'Runs ' + ${phone1.operatingSystem} + ' operating system'"></p>
+    </div>
+
+    <div class="phone">
+        <h3 th:text="${phone2.name}"></h3>
+        <p th:text="'RAM: ' + ${phone2.ram}"></p>
+        <p th:text="'Processor Speed: ' + ${phone2.processorspeed} + ' GHz'"></p>
+        <p th:text="'Battery: ' + ${phone2.batterysize} + ' mAh'"></p>
+        <p th:text="'Screen: ' + ${phone2.screensize} + ' inches'"></p>
+        <p th:text="'Storage: ' + ${phone2.storage} + ' GB'"></p>
+        <p th:text="'Runs ' + ${phone2.operatingSystem} + ' operating system'"></p>
+    </div>
+</div>
+
+</body>
+</html>

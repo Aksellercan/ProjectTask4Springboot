@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Smartphone</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f7fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #333;
+      margin: 0;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #666;
+      margin-top: 10px;
+    }
+
+    form {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      width: 400px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      background-color: #f9f9f9;
+      transition: all 0.3s ease;
+    }
+
+    select:focus, input:focus, button:focus {
+      border-color: #007BFF;
+      outline: none;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Responsive Styling */
+    @media (max-width: 600px) {
+      form {
+        width: 90%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="form-container">
+<!--  <h1>Add a New Smartphone</h1>-->
+  <form action="/smartphones/add" method="POST">
+    <h1>Add a Smartphone</h1>
+    <p>Enter Smartphone details</p>
+    <label for="name">Smartphone Name:</label>
+    <input type="text" id="name" name="name" required><br>
+
+    <label for="ram">RAM (GB):</label>
+    <input type="number" id="ram" name="ram" required><br>
+
+    <label for="processorspeed">Processor Speed (GHz):</label>
+    <input type="number" step="0.1" id="processorspeed" name="processorspeed" required><br>
+
+    <label for="batterysize">Battery Size (mAh):</label>
+    <input type="number" id="batterysize" name="batterysize" required><br>
+
+    <label for="screensize">Screen Size (inches):</label>
+    <input type="number" step="0.1" id="screensize" name="screensize" required><br>
+
+    <label for="storage">Storage (GB):</label>
+    <input type="number" id="storage" name="storage" required><br>
+
+    <label for="operatingsystem">Operating System:</label>
+    <select id="operatingsystem" name="operatingsystem" required>
+      <option value="" disabled selected>Select Operating System</option>
+      <option value=0>Android</option>
+      <option value=1>iOS</option>
+    </select><br>
+
+    <button type="submit">Add Smartphone</button>
+  </form>
+</div>
+
+<script>
+  const form = document.querySelector("form");
+  form.onsubmit = function () {
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 1000);  // Redirects after 1 second for smoother UX
+  };
+</script>
+</body>
+</html>

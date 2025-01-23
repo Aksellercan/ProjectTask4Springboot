@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Smartphones List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #007BFF;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+        table {
+            width: 80%;
+            margin: 30px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #e0e0e0;
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<button class="back-button" onclick="window.location.href='/'">Go Back</button>
+<h1>Smartphones in Database</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>RAM</th>
+        <th>Processor Speed</th>
+        <th>Battery Size</th>
+        <th>Screen Size</th>
+        <th>Storage</th>
+        <th>Operating System</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="phone : ${smartphones}">
+        <td th:text="${phone.id}"></td>
+        <td th:text="${phone.name}"></td>
+        <td th:text="${phone.ram}"></td>
+        <td th:text="${phone.processorspeed}"></td>
+        <td th:text="${phone.batterysize}"></td>
+        <td th:text="${phone.screensize}"></td>
+        <td th:text="${phone.storage}"></td>
+        <td th:text="${phone.operatingSystem}"></td> <!-- Assuming operatingSystem is an object -->
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

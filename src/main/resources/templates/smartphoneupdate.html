@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smartphone Management</title>
+    <style>
+        body {
+            /*font-family: 'Arial', sans-serif;*/
+            /*background-color: #f4f7fa;*/
+            /*margin: 0;*/
+            /*padding: 0;*/
+            /*display: block; !* Ensures elements are not treated as flex or inline *!*/
+            /*text-align: center;*/
+            /*padding-top: 20px; !* Adds space at the top of the page *!*/
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex; /* Use Flexbox */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh; /* Full height of the viewport */
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            margin: 0;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        form {
+            /*background-color: #fff;*/
+            /*border-radius: 8px;*/
+            /*padding: 30px;*/
+            /*width: 400px;*/
+            /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+            /*box-sizing: border-box;*/
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        select, input, button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus, button:focus {
+            border-color: #007BFF;
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        #output {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 600px) {
+            form {
+                width: 90%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<form id="updateForm">
+    <h1>Update a Smartphone</h1>
+    <p>Update Smartphone details</p>
+    <div id="output"></div>
+    <label for="selectPhone">Choose Phone:</label>
+    <select id="selectPhone" name="phoneId" required>
+        <option value="" disabled selected>Select a phone</option>
+        <!-- The options will be populated dynamically -->
+    </select>
+    <button type="button" onclick="loadPhoneData()">Load Data</button>
+
+    <input type="hidden" id="updateId" name="id">
+
+    <label for="updateName">Name:</label>
+    <input type="text" id="updateName" name="name">
+
+    <label for="updateRam">RAM (GB):</label>
+    <input type="number" id="updateRam" name="ram">
+
+    <label for="updateProcessorSpeed">Processor Speed (GHz):</label>
+    <input type="number" step="0.1" id="updateProcessorSpeed" name="processorspeed">
+
+    <label for="updateBatterySize">Battery Size (mAh):</label>
+    <input type="number" id="updateBatterySize" name="batterysize">
+
+    <label for="updateScreenSize">Screen Size (inches):</label>
+    <input type="number" step="0.1" id="updateScreenSize" name="screensize">
+
+    <label for="updateStorage">Storage (GB):</label>
+    <input type="number" id="updateStorage" name="storage">
+
+    <label for="updateOperatingSystem">Operating System:</label>
+    <select id="updateOperatingSystem" name="operatingsystem" required>
+        <option value="" disabled selected>Select Operating System</option>
+        <option value=0>Android</option>
+        <option value=1>iOS</option>
+    </select>
+
+    <button type="button" onclick="updateSmartphone()">Update Smartphone</button>
+</form>
+
+
+
+<script>
+    const output = document.getElementById("output");
+
+    function loadPhoneList() {
+        fetch('/smartphones/all')
+            .then(response => response.json())
+            .then(data => {
+                const phoneSelect = document.getElementById("selectPhone");
+                data.forEach(phone => {
+                    const option = document.createElement("option");
+                    option.value = phone.id;
+                    option.textContent = phone.name;
+                    phoneSelect.appendChild(option);
+                });
+            })
+            .catch(err => {
+                output.innerText = "Error fetching phone list.";
+                console.error(err);
+            });
+    }
+
+    function loadPhoneData() {
+        const phoneId = document.getElementById("selectPhone").value;
+        if (!phoneId) {
+            output.innerText = "Please select a phone.";
+            return;
+        }
+
+        fetch('/smartphones/all')
+            .then(response => response.json())
+            .then(phones => {
+                const selectedPhone = phones.find(phone => phone.id === parseInt(phoneId));
+                if (selectedPhone) {
+                    document.getElementById("updateId").value = selectedPhone.id;
+                    document.getElementById("updateName").value = selectedPhone.name || "";
+                    document.getElementById("updateRam").value = selectedPhone.ram || "";
+                    document.getElementById("updateProcessorSpeed").value = selectedPhone.processorspeed || "";
+                    document.getElementById("updateBatterySize").value = selectedPhone.batterysize || "";
+                    document.getElementById("updateScreenSize").value = selectedPhone.screensize || "";
+                    document.getElementById("updateStorage").value = selectedPhone.storage || "";
+                    //document.getElementById("updateOperatingSystem").value = selectedPhone.operatingSystemName || "Android";
+                    //output.innerText = '${smartphone.name} data loaded.';
+                } else {
+                    output.innerText = "Phone not found.";
+                }
+            })
+            .catch(err => {
+                output.innerText = "Error fetching smartphone data.";
+                console.error(err);
+            });
+    }
+
+    function updateSmartphone() {
+        const form = document.getElementById("updateForm");
+
+        // Check if the form is valid
+        if (!form.checkValidity()) {
+            form.reportValidity(); // This shows the validation errors in the browser
+            return; // Stop further processing if the form is invalid
+        }
+
+        const formData = new FormData(form);
+        const data = new URLSearchParams();
+
+        formData.forEach((value, key) => {
+            if (value.trim() !== "") {
+                data.append(key, value);
+            }
+        });
+
+        fetch('/smartphones/update', {
+            method: 'POST',
+            body: data,
+        })
+            .then(res => res.text())
+            .then(data => output.innerText = data + " updated.")
+            .catch(err => output.innerText = "Error updating smartphone.");
+    }
+
+    window.onload = loadPhoneList;
+</script>
+</body>
+</html>
